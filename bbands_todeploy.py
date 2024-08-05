@@ -4,11 +4,17 @@ import requests
 from datetime import datetime, timedelta
 from pandas.tseries.offsets import BDay
 from concurrent.futures import ThreadPoolExecutor
+import urllib.request
 
-#api key below
+# API key from Streamlit secrets
 api_token = st.secrets['API_KEY']
-# Load the Excel file
+
+# Download the Excel file from GitHub
+excel_url = 'https://github.com/MOMENTOCAPITAL/bbandsapp/main/BBands_ETFs_2024-08-05_v2.xlsx'
 excel_file_path = 'BBands_ETFs_2024-08-05_v2.xlsx'
+urllib.request.urlretrieve(excel_url, excel_file_path)
+
+# Load the Excel file
 sheets_dict = pd.read_excel(excel_file_path, sheet_name=None)
 
 # Sidebar for sector selection
@@ -163,3 +169,4 @@ if current_price is not None:
         st.write(f"**YTD:** {ytd_percentage}%")
 else:
     st.write(f"Could not fetch data for {selected_ticker}. Please try again later.")
+
